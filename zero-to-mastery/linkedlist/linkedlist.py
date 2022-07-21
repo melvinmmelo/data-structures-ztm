@@ -83,6 +83,7 @@ class LinkedList():
     nextToNewNode = leader.next
     leader.next = new_node
     new_node.next = nextToNewNode
+    self.length+=1
 
   def traverseToIndex(self, index):
     counter = 0
@@ -99,6 +100,8 @@ class LinkedList():
 
     temp = leader.next.next
     leader.next = temp
+    self.length-=1
+
 
 
 l = LinkedList()
@@ -110,5 +113,5 @@ l.append(60)
 l.insert2(2, 69)
 print(l.printList())
 
-l.remove(2)
+l.remove(1)
 print(l.printList())

@@ -1,12 +1,10 @@
-from pkg_resources import safe_extra
-
-
 class Node():
   def __init__(self, data):
     self.data = data
     self.next = None
+    self.prev = None
 
-class LinkedList():
+class DLinkedList():
   def __init__(self):
     self.head = None
     self.tail = None
@@ -19,6 +17,7 @@ class LinkedList():
       self.tail = newNode
       self.length = 1
     else:
+      newNode.prev = self.tail
       self.tail.next = newNode
       self.tail = newNode
       self.length +=1
@@ -27,27 +26,28 @@ class LinkedList():
   def prepend(self, data):
     newNode = Node(data)
     newNode.next = self.head
+    self.head.prev = newNode
     self.head = newNode
-
     self.length +=1
 
   def printList(self):
     arr = []
     current = self.head
     while current != None:
+      # print("Current Node", current.data, " Current Node Prev ", current.prev.data, " Current Node Next ", current.prev.data)
       arr.append(current.data)
       current = current.next
 
     print(arr, "Length: ", self.length)
 
-  def convertToArr(self):
+  def reversePrint(self):
     arr = []
-    current = self.head
+    current = self.tail
     while current != None:
       arr.append(current.data)
-      current = current.next
+      current = current.prev
 
-    return arr
+    print(arr, "Length: ", self.length)
 
   def printl(self):
     temp = self.head
@@ -57,29 +57,6 @@ class LinkedList():
     print('Length = '+str(self.length))
 
   def insert(self, index, data):
-    new_node = Node(data)
-    i = 0
-    temp = self.head
-
-    if index>=self.length:
-      self.append(data)
-      return
-
-    if index == 0:
-      self.prepend(data)
-      return
-
-    while temp != None:
-      if i == index:
-        prev.next = new_node
-        new_node.next = temp
-        self.length+=1
-        break
-      prev = temp
-      temp = temp.next
-      i+=1
-
-  def insert2(self, index, data):
     new_node = Node(data)
     if index>=self.length:
       self.append(data)
@@ -92,9 +69,10 @@ class LinkedList():
     # leader is before the index
     # kaya may -1 sa parameter
     leader = self.traverseToIndex(index-1)
-    nextToNewNode = leader.next
+    leader.next.prev = new_node
+    new_node.next = leader.next
+    new_node.prev = leader
     leader.next = new_node
-    new_node.next = nextToNewNode
     self.length+=1
 
   def traverseToIndex(self, index):
@@ -118,40 +96,24 @@ class LinkedList():
       return
 
     leader = self.traverseToIndex(index)
-
     unwanteNode = leader.next
     leader.next = unwanteNode.next
+    unwanteNode.next.prev = leader
+
     self.length-=1
 
-  def reverse(self):
-    prev = None
-    self.tail = self.head
-    count = 0
-    while self.head != None:
-      temp = self.head
-      self.head = self.head.next
-      temp.next = prev
-      prev = temp
-      count+=1
-
-    self.head = temp
 
 
-l = LinkedList()
+l = DLinkedList()
 l.append(1)
 l.append(10)
-l.append(16)
-l.append(88)
-
-
-# l.insert2(5, 16)
-# l.insert2(5, 88)
-
-# l.printList()
-
-# l.remove(0)
-# l.printList()
-
-# l.remove(6)
-l.reverse()
+l.append(19)
+l.append(8)
+l.prepend(69) # prepend add at the beginning
+l.insert(1, 55)
 l.printList()
+
+l.remove(2)
+
+l.printList()
+l.reversePrint()

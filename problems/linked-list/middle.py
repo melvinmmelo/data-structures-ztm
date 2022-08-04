@@ -1,7 +1,18 @@
-from itertools import count
-from pkg_resources import safe_extra
+# finding the middle of linked list
+
+"""
+first approach is to get the length of the linked list -> divide into two
+make a temp storage for the head
+while until mid is 0
+decrement
 
 
+second
+store fast and slow = head, head (same head as starting point)
+slow step one at a time
+fast two step at a time
+loop while fast and fast.next is
+"""
 class Node():
   def __init__(self, data):
     self.data = data
@@ -40,26 +51,6 @@ class LinkedList():
       current = current.next
 
     print(arr, "Length: ", self.length)
-
-
-  def printList(self):
-    arr = []
-    current = self.head
-    while current != None:
-      arr.append(current.data)
-      current = current.next
-
-    print(arr, "Length: ", self.length)
-    return arr
-
-  def printInReverse(self):
-    arr = self.printList()
-    counter = self.length-1
-    while counter >= 0:
-      print(arr[counter])
-      counter -=1
-
-
 
   def convertToArr(self):
     arr = []
@@ -119,16 +110,11 @@ class LinkedList():
     self.length+=1
 
   def traverseToIndex(self, index):
-    if index > self.length:
-      return False
-
     counter = 0
     leader = self.head
     while counter != index:
       leader = leader.next
       counter+=1
-
-    print(f"The leader is {leader.data}")
     return leader
 
   def remove(self, index):
@@ -149,14 +135,26 @@ class LinkedList():
     leader.next = unwanteNode.next
     self.length-=1
 
+  def printMid(self):
+    fast = self.head
+    slow = self.head
+
+    while fast and fast.next:
+      slow = slow.next
+      fast = fast.next.next
+
+    print("Middle is ", slow.data)
+
   def reverse(self):
     prev = None
     self.tail = self.head
+    count = 0
     while self.head != None:
       temp = self.head
       self.head = self.head.next
       temp.next = prev
       prev = temp
+      count+=1
 
     self.head = temp
 
@@ -166,20 +164,14 @@ l.append(1)
 l.append(10)
 l.append(16)
 l.append(88)
+l.append(19)
+l.append(20)
+l.append(88)
+l.append(101)
 
 
-# l.insert2(5, 16)
-# l.insert2(5, 88)
-
-# l.printList()
-
-# l.remove(0)
-# l.printList()
 
 
-# l.remove(6)
-# l.reverse()
 l.printList()
 
-l.printInReverse()
-#sl.traverseToIndex(18)
+l.printMid()
